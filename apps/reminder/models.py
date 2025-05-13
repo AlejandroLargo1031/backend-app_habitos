@@ -1,10 +1,10 @@
 from django.db import models
 import uuid
-from apps.habits.models import Habit
+from apps.habito.models import Habito
 
 class Reminder(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    habito = models.ForeignKey(Habit, on_delete=models.CASCADE, related_name='recordatorios')
+    habito = models.ForeignKey(Habito, on_delete=models.CASCADE, related_name='recordatorios')
     horarios = models.JSONField()  # Almacena los horarios de los recordatorios en formato JSON
     silenciar_desde = models.TimeField(null=True, blank=True)  # Hora de inicio para silenciar recordatorios
     silenciar_hasta = models.TimeField(null=True, blank=True)  # Hora de fin para silenciar recordatorios

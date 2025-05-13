@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Habit, DailyProgress
+from .models import DailyProgress
 
-admin.site.register(Habit)
 admin.site.register(DailyProgress)

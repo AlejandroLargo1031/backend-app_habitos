@@ -4,7 +4,7 @@ import environ
 from datetime import timedelta
 from decouple import config
 
-SECRET_KEY = config('SECRET_KEY', default='clave-secreta')
+SECRET_KEY = config('SECRET_KEY')
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'apps.users',
-    'apps.habits',
+    'apps.habito',
+    'apps.hydration',
     'apps.dailyProgress',
     'apps.userActivity',
     'apps.reminder',
@@ -28,9 +29,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    # 'apps.auth.middleware.ClerkJWTAuthenticationMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -104,11 +106,8 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'apps.authentication.clerk_authentication.ClerkJWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
 }
 
 SIMPLE_JWT = {
@@ -116,7 +115,27 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
+CLERK_JWKS_URL = "https://curious-mammoth-54.clerk.accounts.dev/.well-known/jwks.json"
+CLERK_ISSUER = "https://curious-mammoth-54.clerk.accounts.dev"
+CLERK_AUDIENCE = "http://localhost:8000"
+
+
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://curious-mammoth-54.clerk.accounts.dev"
 ]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_ALL_ORIGINS = True  # ¡No usar en producción!
+
+CORS_ALLOW_CREDENTIALS = True

@@ -1,23 +1,16 @@
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from django.contrib.auth.base_user import BaseUserManager
 
-@admin.register(CustomUser)
-class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    list_display = ('id', 'correo_electronico', 'nombre_usuario', 'is_staff', 'is_active')
-    search_fields = ('correo_electronico', 'nombre_usuario')
-    list_filter = ('is_staff', 'is_active')
-    ordering = ('correo_electronico',)
-    fieldsets = (
-        (None, {'fields': ('correo_electronico', 'password')}),
-        ('Información personal', {'fields': ('nombre_usuario', 'correo_verificado', 'notificaciones_habilitadas')}),
-        ('Permisos', {'fields': ('is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')}),
-        ('Fechas importantes', {'fields': ('last_login', 'date_joined')}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('correo_electronico', 'nombre_usuario', 'password1', 'password2', 'is_staff', 'is_active'),
-        }),
-    )
+class CustomUserAdmin(BaseUserManager):
+    def create_user(self, correo_electronico, password=None, **extra_fields):
+        if not correo_electronico:
+            raise ValueError("El correo electrónico es obligatorio.")
+        email = self.normalize_email(correo_electronico)
+        user = self.model(correo_electronico=email, **extra_fields)
+        user.set_unusable_password()  # No necesitas password real
+        user.save()
+        return user
+
+    def create_superuser(self, correo_electronico, password=None, **extra_fields):
+        extra_fields.setdefault("es_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        return self.create_user(correo_electronico, password, **extra_fields)
