@@ -63,15 +63,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env')) 
 
-# Configuración de la base de datos
 DATABASES = {
     'default': {
-        'ENGINE': env('DB_ENGINE'),  # Motor de la base de datos
-        'NAME': env('DB_NAME'),  # Nombre de la base de datos
-        'USER': env('DB_USER'),  # Usuario
-        'PASSWORD': env('DB_PASSWORD'),  # Contraseña
-        'HOST': env('DB_HOST'),  # Host
-        'PORT': env('DB_PORT'),  # Puerto
+        'ENGINE': env('DB_ENGINE'), 
+        'NAME': env('DB_NAME'), 
+        'USER': env('DB_USER'),  
+        'PASSWORD': env('DB_PASSWORD'),  
+        'HOST': env('DB_HOST'),  
+        'PORT': env('DB_PORT'),  
     }
 }
 
@@ -136,6 +135,6 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True  # ¡No usar en producción!
+CORS_ALLOW_ALL_ORIGINS = True 
 
 CORS_ALLOW_CREDENTIALS = True

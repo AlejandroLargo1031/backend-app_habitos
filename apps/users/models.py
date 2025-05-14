@@ -19,7 +19,6 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     correo_electronico = models.EmailField(unique=True)
     nombre = models.CharField(max_length=255, blank=True, null=True)
-    # El campo 'password' existe porque lo heredas de AbstractBaseUser
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 

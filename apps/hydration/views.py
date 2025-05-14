@@ -1,4 +1,3 @@
-# apps/hydration/views.py
 from rest_framework import viewsets, status
 from rest_framework.response import Response  # ¡Este es el import correcto!
 from rest_framework.permissions import IsAuthenticated
@@ -49,10 +48,8 @@ class HydrationViewSet(viewsets.ViewSet):
         user = request.user
         today = date.today()
 
-        # Obtener o crear el registro de hoy
         record, created = HydrationRecord.objects.get_or_create(user=user, date=today)
 
-        # Incrementar la cantidad de agua
         record.amount += 1
         record.save()
 

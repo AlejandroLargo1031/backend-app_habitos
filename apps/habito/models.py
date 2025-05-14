@@ -37,7 +37,6 @@ class Habito(models.Model):
             return
 
         try:
-            # Convertir y ordenar fechas
             dates = sorted(
                 [datetime.strptime(d, '%Y-%m-%d').date() 
                  for d in self.completed_dates
@@ -46,7 +45,6 @@ class Habito(models.Model):
             current_streak = 1
             max_streak = 1
 
-            # Calcular rachas
             for i in range(1, len(dates)):
                 if (dates[i] - dates[i-1]).days == 1:
                     current_streak += 1

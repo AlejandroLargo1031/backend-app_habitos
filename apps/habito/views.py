@@ -18,8 +18,7 @@ class HabitoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(usuario=self.request.user)  # 🔐 Asigna el usuario autenticado
-        
+        serializer.save(usuario=self.request.user)  
 
 class HabitoListView(generics.ListAPIView):
     serializer_class = HabitoSerializer
@@ -40,13 +39,13 @@ class HabitoUpdateView(generics.UpdateAPIView):
     serializer_class = HabitoSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'id'
-    http_method_names = ['patch']  # Solo permitir PATCH
+    http_method_names = ['patch']  
 
     def get_queryset(self):
         return Habito.objects.filter(usuario=self.request.user)
 
     def perform_update(self, serializer):
-        serializer.save(partial=True)  # Actualización parcial
+        serializer.save(partial=True) 
         
     def perform_update(self, serializer):
         instance = self.get_object()
@@ -85,13 +84,11 @@ class HabitoCreateView(APIView):
     def post(self, request):
         try:
             data = request.data.copy()
-            # Eliminar la asignación manual del usuario
             data["tipo_habito"] = "cuantitativo"
             data["color"] = "#34D399"
 
             serializer = HabitoSerializer(data=data)
             serializer.is_valid(raise_exception=True)
-            # Asignar usuario al guardar
             serializer.save(usuario=request.user)
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -116,7 +113,6 @@ class ResetDailyProgressView(APIView):
 
                 yesterday = today - timedelta(days=1)
 
-                # Cambia 'fecha' por el nombre real del campo en el modelo relacionado
                 if not habit.completed_dates.filter(fecha=yesterday).exists():
                     habit.racha_actual = 0
 

@@ -18,17 +18,15 @@ class ClerkJWTAuthentication(BaseAuthentication):
         jwks_url = settings.CLERK_JWKS_URL
 
         try:
-            # Cliente JWKS para obtener la clave pública del token
             jwk_client = PyJWKClient(jwks_url)
             signing_key = jwk_client.get_signing_key_from_jwt(token)
 
             print("Autenticando token JWT...")
 
-            # Decodificar el token
             decoded_token = jwt.decode(
                 token,
                 signing_key.key,
-                algorithms=["RS256"],  # Clerk usa RS256
+                algorithms=["RS256"],  
                 audience=settings.CLERK_AUDIENCE,
                 issuer=settings.CLERK_ISSUER,
             )
@@ -40,12 +38,10 @@ class ClerkJWTAuthentication(BaseAuthentication):
 
         print("Token decodificado:", decoded_token)
 
-        # Obtener email desde el token
         email = decoded_token.get("email")
         if not email:
             raise AuthenticationFailed("Token inválido: falta el email")
 
-        # Crear o recuperar el usuario
         user, _ = User.objects.get_or_create(
             correo_electronico=email,
             defaults={

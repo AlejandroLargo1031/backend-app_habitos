@@ -1,4 +1,3 @@
-# apps/hydration/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import HydrationViewSet, HydrationReminderViewSet
@@ -7,7 +6,6 @@ router = DefaultRouter()
 router.register(r'records', HydrationViewSet, basename='hydration-records')
 router.register(r'reminders', HydrationReminderViewSet, basename='hydration-reminders')
 
-# Configuración para acciones personalizadas
 urlpatterns = [
     path('', include(router.urls)),
     path('dashboard/', HydrationViewSet.as_view({'get': 'dashboard'}), name='hydration-dashboard'),
