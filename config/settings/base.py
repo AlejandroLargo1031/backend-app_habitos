@@ -134,10 +134,9 @@ CLERK_AUDIENCE = "http://localhost:8000"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://curious-mammoth-54.clerk.accounts.dev"
-    "https://tu-frontend.onrender.com",  # Cambia esto
-    "https://*.onrender.com",  # Permite todos los subdominios de Render
-    "https://curious-mammoth-54.clerk.accounts.dev"
+    "https://curious-mammoth-54.clerk.accounts.dev",
+    "https://tu-frontend.onrender.com",
+    "https://*.onrender.com",
 ]
 
 DEBUG = False  # Siempre False en producción
