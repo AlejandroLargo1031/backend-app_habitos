@@ -115,7 +115,7 @@ SIMPLE_JWT = {
 
 CLERK_JWKS_URL = "https://curious-mammoth-54.clerk.accounts.dev/.well-known/jwks.json"
 CLERK_ISSUER = "https://curious-mammoth-54.clerk.accounts.dev"
-CLERK_AUDIENCE = "http://localhost:8000"
+CLERK_AUDIENCE = "https://backend-app-habitos.onrender.com"
 
 
 
