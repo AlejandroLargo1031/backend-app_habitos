@@ -2,9 +2,10 @@ import os
 from pathlib import Path
 import environ
 from datetime import timedelta
+import dj_database_url
 from decouple import config
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'un_valor_por_defecto_seguro')  # Configúrala en Render
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ¡Debe estar arriba de SecurityMiddleware!
     'corsheaders.middleware.CorsMiddleware',
     # 'apps.auth.middleware.ClerkJWTAuthenticationMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -73,6 +75,15 @@ DATABASES = {
         'PORT': env('DB_PORT'),  
     }
 }
+
+DATABASES = {'default': dj_database_url.config()}
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.getenv('DATABASE_URL'), 
+#         conn_max_age=600
+#     )
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -124,16 +135,20 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://curious-mammoth-54.clerk.accounts.dev"
+    "https://tu-frontend.onrender.com",  # Cambia esto
+    "https://*.onrender.com",  # Permite todos los subdominios de Render
+    "https://curious-mammoth-54.clerk.accounts.dev"
 ]
 
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
+DEBUG = False  # Siempre False en producción
+ALLOWED_HOSTS = ['*'] 
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+CLERK_AUDIENCE = "https://tu-api.onrender.com"
 
 CORS_ALLOW_ALL_ORIGINS = True 
 
