@@ -115,7 +115,7 @@ SIMPLE_JWT = {
 
 CLERK_JWKS_URL = "https://curious-mammoth-54.clerk.accounts.dev/.well-known/jwks.json"
 CLERK_ISSUER = "https://curious-mammoth-54.clerk.accounts.dev"
-CLERK_AUDIENCE = "https://backend-app-habitos.onrender.com/"
+CLERK_AUDIENCE = "https://backend-app-habitos.onrender.com"
 
 
 
@@ -134,8 +134,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-CLERK_AUDIENCE = "https://tu-api.onrender.com"
 
 CORS_ALLOW_ALL_ORIGINS = True 
 
