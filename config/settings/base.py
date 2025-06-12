@@ -4,6 +4,9 @@ import environ
 from datetime import timedelta
 import dj_database_url
 from decouple import config
+import socket
+
+IS_LOCAL = socket.gethostname() == 'localhost' or os.getenv("ENV") == "local"
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'un_valor_por_defecto_seguro')  # Configúrala en Render
 
@@ -65,12 +68,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env')) 
 
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+        'OPTIONS': {
+        }
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -117,13 +126,10 @@ CLERK_JWKS_URL = "https://curious-mammoth-54.clerk.accounts.dev/.well-known/jwks
 CLERK_ISSUER = "https://curious-mammoth-54.clerk.accounts.dev"
 CLERK_AUDIENCE = "https://backend-app-habitos.onrender.com"
 
-
-
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://curious-mammoth-54.clerk.accounts.dev",
-    "https://tu-frontend.onrender.com",
+    "https://*.supabase.co",
     "https://*.onrender.com",
 ]
 
@@ -138,3 +144,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CORS_ALLOW_ALL_ORIGINS = True 
 
 CORS_ALLOW_CREDENTIALS = True
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
